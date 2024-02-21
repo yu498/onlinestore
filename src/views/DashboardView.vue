@@ -1,14 +1,20 @@
 <template>
   <Navbar></Navbar>
-<router-view />
+  <div class="container-fluid mt-3 position-relative">
+    <ToastMessages></ToastMessages>
+    <router-view/>
+  </div>
 </template>
 
 <script>
+import emitter from '@/methods/emitter';
+import ToastMessages from '@/components/ToastMessages.vue';
 import Navbar from '../components/NavBar.vue';
 
 export default {
   components: {
     Navbar,
+    ToastMessages,
   },
   created() {
     const token = document.cookie.replace(
@@ -22,9 +28,19 @@ export default {
       .then((res) => {
         if (!res.data.success) {
           this.$router.push('/login');
+        } else {
+          emitter.emit('push-message', {
+            style: 'success',
+            title: '登入成功',
+          });
         }
       })
       .catch((err) => { console.log(err.required); }); // 反之失敗原因
+  },
+  provide() {
+    return {
+      emitter,
+    };
   },
 };
 </script>
