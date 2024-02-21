@@ -1,7 +1,7 @@
 <!-- eslint-disable vuejs-accessibility/no-autofocus -->
 <!-- eslint-disable jsx-a11y/label-has-associated-control, jsx-a11y/label-has-for  -->
-
 <template>
+  <LoadingAnimation :active="isLoading"></LoadingAnimation>
   <div class="container mt-5">
     <form class="row justify-content-center" @submit.prevent="signIN">
       <div class="col-md-6">
@@ -30,6 +30,7 @@
 export default {
   data() {
     return {
+      isLoading: false,
       user: {
         username: '',
         password: '',
@@ -41,9 +42,11 @@ export default {
       // console.log('login');
       const api = `${process.env.VUE_APP_API}admin/signin`; // 串接登入的url
       // console.log(api);
+      this.isLoading = true;
       this.$http.post(api, this.user) // 向api發出post的請求
-        .then((res) => {
-          console.log(res); // 當登入成功時顯示成功字串
+        .then((res) => { // 請求成功
+          this.isLoading = false;
+          // console.log(res, 'login'); // 當登入成功時顯示成功字串
           if (res.data.success) {
             const { token, expired } = res.data;
             // console.log(token, expired);
@@ -52,7 +55,7 @@ export default {
             this.$router.push('dashboard/products');
           }
         })
-        .catch((err) => { console.log(err); }); // 反之失敗原因
+        .catch((err) => { console.log(err); }); // 請求失敗
     },
   },
 };

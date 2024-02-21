@@ -1,4 +1,5 @@
 <template>
+  <LoadingAnimation :active="isLoading"></LoadingAnimation>
   <div class="text-end">
     <button class="btn btn-primary" type="button" @click="openModal(true)">
       新增產品
@@ -32,7 +33,7 @@
       <td>
         <div class="btn-group">
           <button class="btn btn-outline-primary btn-sm" @click="openModal(false, item)">編輯</button>
-          <button class="btn btn-outline-danger btn-sm">刪除</button>
+          <button class="btn btn-outline-danger btn-sm" @click="openDelModal(item)">刪除</button>
         </div>
       </td>
     </tr>
@@ -40,10 +41,12 @@
 </table>
 <ProductModal ref="productModal" :product="tempProduct"
 @update-product="updateProduct"></ProductModal>
+<DelModal :item="tempProduct" @del-item="delProduct" ref="delModal"></DelModal>
 </template>
 
 <script>
 import ProductModal from '../components/ProductModal.vue';
+import DelModal from '../components/DelModal.vue';
 
 export default {
   data() {
@@ -52,14 +55,18 @@ export default {
       pagination: {},
       tempProduct: {
         isNew: false,
+        isLoading: false,
       },
     };
   },
+  inject: ['emitter'],
   methods: {
     getProducts() {
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products`;
+      this.isLoading = true;
       this.$http.get(api)
         .then((res) => {
+          this.isLoading = false;
           if (res.data.success) {
             this.products = res.data.products;
             this.pagination = res.data.pagination;
@@ -67,7 +74,7 @@ export default {
         })
         .catch((err) => { console.log(err.required); });
     },
-    openModal(isNew, item) {
+    openModal(isNew, item) { // 開啟新增編輯視窗
       if (isNew) {
         this.tempProduct = {}; // 將裡面資料先清空
       } else {
@@ -88,16 +95,48 @@ export default {
         httpMethod = 'put';
       }
       const productComponent = this.$refs.productModal;
+      this.isLoading = true;
       this.$http[httpMethod](api, { data: this.tempProduct }) // 向api發出post的請求
         .then((res) => { // 請求成功
+          this.isLoading = false;
           console.log(res);
           productComponent.hideModal();
-          this.getProducts();
+          if (res.data.success) {
+            this.getProducts();
+            this.emitter.emit('push-message', {
+              style: 'success',
+              title: '更新成功',
+            });
+          } else {
+            this.getProducts();
+            this.emitter.emit('push-message', {
+              style: 'danger',
+              title: '更新失敗',
+              content: res.data.message.join('、'),
+            });
+          }
         });
+    },
+    openDelModal(item) { // 開啟刪除視窗
+      this.tempProduct = { ...item };
+      const delComponent = this.$refs.delModal;
+      delComponent.showModal();
+    },
+    delProduct() {
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`;
+      this.isLoading = true;
+      this.$http.delete(api).then((response) => {
+        this.isLoading = false;
+        console.log(response.data);
+        const delComponent = this.$refs.delModal;
+        delComponent.hideModal();
+        this.getProducts();
+      });
     },
   },
   components: {
     ProductModal,
+    DelModal,
   },
   created() {
     this.getProducts();
