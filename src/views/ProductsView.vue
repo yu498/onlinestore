@@ -39,35 +39,37 @@
     </tr>
   </tbody>
 </table>
+<PaginationCps :pages="pagination" @emit-pages="getProducts"></PaginationCps>
 <ProductModal ref="productModal" :product="tempProduct"
 @update-product="updateProduct"></ProductModal>
 <DelModal :item="tempProduct" @del-item="delProduct" ref="delModal"></DelModal>
 </template>
 
 <script>
-import ProductModal from '../components/ProductModal.vue';
-import DelModal from '../components/DelModal.vue';
+import ProductModal from '@/components/ProductModal.vue';
+import DelModal from '@/components/DelModal.vue';
+import PaginationCps from '@/components/PaginationCps.vue';
 
 export default {
   data() {
     return {
       products: [],
       pagination: {},
-      tempProduct: {
-        isNew: false,
-        isLoading: false,
-      },
+      tempProduct: {},
+      isNew: false,
+      isLoading: false,
     };
   },
   inject: ['emitter'],
   methods: {
-    getProducts() {
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products`;
+    getProducts(page = 1) {
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products/?page=${page}`;
       this.isLoading = true;
       this.$http.get(api)
         .then((res) => {
           this.isLoading = false;
           if (res.data.success) {
+            // console.log(res.data.pagination);
             this.products = res.data.products;
             this.pagination = res.data.pagination;
           }
@@ -137,6 +139,7 @@ export default {
   components: {
     ProductModal,
     DelModal,
+    PaginationCps,
   },
   created() {
     this.getProducts();
