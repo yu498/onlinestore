@@ -27,6 +27,28 @@ const routes = [
         path: 'products',
         component: () => import('../views/ProductsView.vue'),
       },
+      {
+        path: 'order',
+        component: () => import('../views/OrderView.vue'),
+      },
+      {
+        path: 'coupon',
+        component: () => import('../views/CouponView.vue'),
+      },
+    ],
+  },
+  {
+    path: '/user',
+    component: () => import('../views/UserboardView.vue'),
+    children: [
+      {
+        path: 'card',
+        component: () => import('../views/UserCardView.vue'),
+      },
+      {
+        path: 'product/:productID',
+        component: () => import('../views/UserProductView.vue'),
+      },
     ],
   },
 ];
