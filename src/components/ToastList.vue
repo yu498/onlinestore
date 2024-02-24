@@ -14,7 +14,7 @@
 import Toast from 'bootstrap/js/dist/toast';
 
 export default {
-  name: 'Toast',
+  name: 'ToastList',
   props: [
     'msg',
   ],
