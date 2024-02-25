@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import ProductModal from '@/components/ProductModal.vue';
-import DelModal from '@/components/DelModal.vue';
-import PaginationCps from '@/components/PaginationCps.vue';
+import ProductModal from '@/components/Backend/ProductModal.vue';
+import DelModal from '@/components/Backend/DelModal.vue';
+import PaginationCps from '@/components/Backend/PaginationCps.vue';
 
 export default {
   data() {
