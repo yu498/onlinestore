@@ -69,8 +69,8 @@ export default {
         .then((res) => {
           this.isLoading = false;
           if (res.data.success) {
-            // console.log(res.data.pagination);
             this.products = res.data.products;
+            console.log(res.data.products);
             this.pagination = res.data.pagination;
           }
         })
@@ -101,7 +101,6 @@ export default {
       this.$http[httpMethod](api, { data: this.tempProduct }) // 向api發出post的請求
         .then((res) => { // 請求成功
           this.isLoading = false;
-          console.log(res);
           productComponent.hideModal();
           if (res.data.success) {
             this.getProducts();

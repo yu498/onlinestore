@@ -48,6 +48,7 @@
             <div style="height: 100px; background-size: cover; background-position: center;"
               :style="{ backgroundImage: `url(${item.imageUrl})` }">
             </div>
+            <!-- <img :src="item.imageUrl" alt=""> -->
           </figure>
           <div>
             <a style="text-decoration: none; color: black;" href="#"

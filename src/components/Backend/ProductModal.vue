@@ -17,14 +17,14 @@
           <div class="mb-3">
             <label for="image" class="form-label">輸入圖片網址
               <input type="text" class="form-control" id="image"
-                    placeholder="請輸入圖片連結">
+                    placeholder="請輸入圖片連結" v-model="tempProduct.imageUrl">
             </label>
           </div>
           <div class="mb-3">
             <label for="customFile" class="form-label">或 上傳圖片
               <i class="fas fa-spinner fa-spin"></i>
               <input type="file" id="customFile" class="form-control" ref="fileInput"
-              @change="uploadFilde()">
+              @change="uploadFilde">
             </label>
           </div>
           <img class="img-fluid" alt="">
@@ -101,7 +101,8 @@
                 <input class="form-check-input" type="checkbox"
                       :true-value="1"
                       :false-value="0"
-                      id="is_enabled">
+                      id="is_enabled"
+                      v-model="tempProduct.is_enabled">
                 是否啟用
               </label>
             </div>
@@ -146,12 +147,15 @@ export default {
   methods: {
     uploadFilde() {
       const uploadedFile = this.$refs.fileInput.files[0];
-      // console.dir(uploadedFile);
       const formData = new FormData();
       formData.append('file-to-upload', uploadedFile);
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/upload`;
       this.$http.post(url, formData)
-        .then((res) => { console.log(res); })
+        .then((res) => {
+          if (res.data.success) {
+            this.tempProduct.imageUrl = res.data.imageUrl;
+          }
+        })
         .catch((err) => { console.log(err); });
     },
   },
