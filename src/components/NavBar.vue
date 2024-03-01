@@ -1,39 +1,45 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mx-2 sticky-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <router-link to="/user/card" class="nav-link mx-4 my-2">男裝</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="" class="nav-link mx-4 my-2">女裝</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="" class="nav-link mx-4 my-2">配件類</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="" class="nav-link mx-4 my-2">訂單查詢</router-link>
-          </li>
-        </ul>
-        <div class="d-flex justify-content-end">
-          <p class="nav-item m-2"><i class="bi bi-cart-fill"></i></p>
-          <router-link to="/login"><i class="bi bi-person-circle"></i></router-link>
-          <p class="nav-item m-2"><i class="bi bi-person-circle"></i></p>
-        </div>
-      </div>
+   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+    aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <router-link to="/dashboard/products" class="nav-link">產品列表</router-link>
+        </li>
+        <li>
+          <router-link to="/dashboard/order" class="nav-link">訂單</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/dashboard/coupon" class="nav-link">優惠卷</router-link>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#" @click.prevent="logout">登出</a>
+        </li>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
 </template>
+
+<script>
+export default {
+  methods: {
+    logout() {
+      const api = `${process.env.VUE_APP_API}logout`;
+      this.$http.post(api, this.user)
+        .then((res) => {
+          if (res.data.success) {
+            this.$router.push('/');
+          }
+        })
+        .catch((err) => { console.log(err.required); });
+    },
+  },
+};
+</script>

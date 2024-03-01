@@ -39,8 +39,8 @@
 </template>
 
 <script>
-import couponModal from '@/components/Backend/CouponModal.vue';
-import DelModal from '@/components/Backend/DelModal.vue';
+import couponModal from '@/components/CouponModal.vue';
+import DelModal from '@/components/DelModal.vue';
 
 export default {
   components: {

@@ -1,15 +1,18 @@
 <template>
-    <HelloWorld/>
+    <NavBar/>
+    <HomeMode/>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import HomeMode from '@/components/HomeMode.vue';
+import NavBar from '@/components/UserNavBar.vue';
 
 export default {
   name: 'HomeView',
   components: {
-    HelloWorld,
+    HomeMode,
+    NavBar,
   },
   created() {
     console.log(process.env.VUE_APP_PATH);

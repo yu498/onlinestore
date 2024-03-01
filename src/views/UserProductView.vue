@@ -1,12 +1,6 @@
-<!-- <<template>
+<template>
   <Loading :active="isLoading"></Loading>
   <div class="container">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><router-link to="/user/cart">購物車</router-link></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>
-      </ol>
-    </nav>
     <div class="row justify-content-center">
       <article class="col-8">
         <h2>{{ product.title }}</h2>
@@ -34,40 +28,54 @@ export default {
     return {
       product: {},
       id: '',
+      status: {
+        loadingItem: '',
+      },
     };
   },
   methods: {
     getProduct() {
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${this.id}`;
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${this.id}`;
       this.isLoading = true;
-      this.$http.get(api).then((response) => {
-        console.log(response.data);
+      this.$http.get(url).then((res) => {
+        console.log(res.data);
         this.isLoading = false;
-        if (response.data.success) {
-          this.product = response.data.product;
+        if (res.data.success) {
+          this.product = res.data.product;
         }
       });
     },
-    addToCart(id, qty = 1) {
-      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
+    addToCart(id) {
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
       const cart = {
         product_id: id,
-        qty,
+        qty: 1,
       };
-      this.isLoading = true;
-      this.$http.post(url, { data: cart }).then((response) => {
-        this.isLoading = false;
-        this.$httpMessageState(response, '加入購物車');
-        this.$router.push('/user/cart');
-      });
+      this.status.loadingItem = id;
+      this.$http.post(api, { data: cart })
+        .then((res) => {
+          this.status.loadingItem = '';
+          console.log(res);
+        });
     },
+    // addToCart(id, qty = 1) {
+    //   const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
+    //   const cart = {
+    //     product_id: id,
+    //     qty,
+    //   };
+    //   this.isLoading = true;
+    //   this.$http.post(url, { data: cart }).then((response) => {
+    //     this.isLoading = false;
+    //     this.$httpMessageState(response, '加入購物車');
+    //     this.$router.push('/user/cart');
+    //   });
+    // },
   },
   created() {
-    this.id = this.$route.params.productId;
+    this.id = this.$route.params.productID;
     this.getProduct();
+    console.log(this.$route.params.productID);
   },
 };
-</script> -->
-<template>
-  5
-</template>
+</script>

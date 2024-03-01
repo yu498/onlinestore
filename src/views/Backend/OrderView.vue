@@ -57,9 +57,9 @@
 </template>
 
 <script>
-import DelModal from '@/components/Backend/DelModal.vue';
-import OrderModal from '@/components/Backend/OrderModal.vue';
-import Pagination from '@/components/Backend/PaginationCps.vue';
+import DelModal from '@/components/DelModal.vue';
+import OrderModal from '@/components/OrderModal.vue';
+import Pagination from '@/components/PaginationCps.vue';
 
 export default {
   data() {
@@ -90,10 +90,15 @@ export default {
       });
     },
     openModal(isNew, item) {
-      this.tempOrder = { ...item };
-      this.isNew = false;
-      const orderComponent = this.$refs.orderModal;
-      orderComponent.showModal();
+      this.isNew = isNew;
+      if (this.isNew) {
+        this.tempCoupon = {
+          due_date: new Date().getTime() / 1000,
+        };
+      } else {
+        this.tempCoupon = { ...item };
+      }
+      this.$refs.couponModal.showModal();
     },
     openDelOrderModal(item) {
       this.tempOrder = { ...item };
