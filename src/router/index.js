@@ -45,6 +45,10 @@ const routes = [
         path: 'cart',
         component: () => import('../views/UserCartView.vue'),
       },
+      {
+        path: 'checkout/:orderId',
+        component: () => import('../views/UserCheckoutView.vue'),
+      },
     ],
   },
 ];
