@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light mx-2 sticky-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="../assets/image/_567258af-54db-48c4-9026-667cbcd296b9.jpg"
+        <img src="../assets/image/logo.jpg"
         alt="" width="100" height="30">
       </a>
       <button

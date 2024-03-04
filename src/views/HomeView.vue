@@ -14,8 +14,5 @@ export default {
     HomeMode,
     NavBar,
   },
-  created() {
-    console.log(process.env.VUE_APP_PATH);
-  },
 };
 </script>
