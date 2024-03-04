@@ -105,35 +105,30 @@ export default {
           productComponent.hideModal();
           if (res.data.success) {
             this.getProducts();
-            this.emitter.emit('push-message', {
-              style: 'success',
-              title: '更新成功',
-            });
+            this.$httpMessageState(res, '更新成功');
           } else {
             this.getProducts();
-            this.emitter.emit('push-message', {
-              style: 'danger',
-              title: '更新失敗',
-              content: res.data.message.join('、'),
-            });
+            this.$httpMessageState(res, '更新成功');
           }
-        });
+        })
+        .catch((err) => console.log(err));
     },
     openDelModal(item) { // 開啟刪除視窗
       this.tempProduct = { ...item };
       const delComponent = this.$refs.delModal;
       delComponent.showModal();
     },
-    delProduct() {
+    delProduct() { // 刪除物品
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/product/${this.tempProduct.id}`;
       this.isLoading = true;
-      this.$http.delete(api).then((response) => {
+      this.$http.delete(api).then((res) => {
         this.isLoading = false;
-        console.log(response.data);
+        this.$httpMessageState(res, '刪除成功');
         const delComponent = this.$refs.delModal;
         delComponent.hideModal();
         this.getProducts();
-      });
+      })
+        .catch((err) => console.log(err));
     },
   },
   components: {

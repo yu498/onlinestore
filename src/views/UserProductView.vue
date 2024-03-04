@@ -1,23 +1,3 @@
-<!-- <template>
-  <div class="container">
-    <div class="row justify-content-center">
-      <article class="col-8">
-        <h2>{{ product.title }}</h2>
-        <div>{{ product.content }}</div>
-        <div>{{ product.description }}</div>
-        <img :src="product.imageUrl" alt="" class="img-fluid mb-3">
-      </article>
-      <div class="col-4">
-        <div class="h5"> ${{ product.price }} 元</div>
-        <hr>
-        <button type="button" class="btn btn-outline-secondary"
-                @click="addToCart(product.id)">
-          加到購物車
-        </button>
-      </div>
-    </div>
-  </div>
-</template> -->
 <template>
   <div class="container">
     <div class="row justify-content-center">
@@ -62,11 +42,11 @@ export default {
     getProduct() { // 取得單筆產品資訊
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/product/${this.id}`;
       this.isLoading = true;
-      this.$http.get(url).then((res) => {
-        if (res.data.success) {
-          this.product = res.data.product;
-        }
-      });
+      this.$http.get(url)
+        .then((res) => {
+          if (res.data.success) { this.product = res.data.product; }
+        })
+        .catch((err) => console.log(err));
     },
     addToCart(id) { // 加入購物車
       const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
@@ -76,9 +56,11 @@ export default {
       };
       this.status.loadingItem = id;
       this.$http.post(api, { data: cart })
-        .then(() => {
+        .then((res) => {
           this.status.loadingItem = '';
-        });
+          this.$httpMessageState(res, '已加入購物車');
+        })
+        .catch((err) => console.log(err));
     },
   },
   created() {

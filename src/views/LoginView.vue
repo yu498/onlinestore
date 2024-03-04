@@ -1,5 +1,3 @@
-<!-- eslint-disable vuejs-accessibility/no-autofocus -->
-<!-- eslint-disable jsx-a11y/label-has-associated-control, jsx-a11y/label-has-for  -->
 <template>
   <LoadingAnimation :active="isLoading"></LoadingAnimation>
   <div class="container mt-5">
@@ -39,17 +37,13 @@ export default {
   },
   methods: {
     signIN() { // 建立登入api
-      // console.log('login');
       const api = `${process.env.VUE_APP_API}admin/signin`; // 串接登入的url
-      // console.log(api);
       this.isLoading = true;
       this.$http.post(api, this.user) // 向api發出post的請求
         .then((res) => { // 請求成功
           this.isLoading = false;
-          // console.log(res, 'login'); // 當登入成功時顯示成功字串
           if (res.data.success) {
             const { token, expired } = res.data;
-            // console.log(token, expired);
             // 建立cookie
             document.cookie = `hexTonken=${token}; expired=${new Date(expired)}`;
             this.$router.push('dashboard/products');

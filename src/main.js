@@ -12,6 +12,7 @@ import * as AllRules from '@vee-validate/rules';
 import { localize, setLocale } from '@vee-validate/i18n';
 import zhTW from '@vee-validate/i18n/dist/locale/zh_TW.json';
 import { currency, date } from './methods/filter';
+import $httpMessageState from './methods/pushMessage';
 import App from './App.vue';
 import router from './router';
 
@@ -32,5 +33,6 @@ app.component('LoadingAnimation', Loading);
 app.component('V-Form', Form);
 app.component('V-Field', Field);
 app.component('ErrorMessage', ErrorMessage);
+app.config.globalProperties.$httpMessageState = $httpMessageState;
 app.use(router);
 app.mount('#app');

@@ -58,7 +58,8 @@ export default {
         .then((res) => {
           this.isLoading = false;
           this.products = res.data.products;
-        });
+        })
+        .catch((err) => console.log(err));
     },
     getProduct(id) { // 進入商品特定頁面
       this.$router.push(`/user/product/${id}`);
@@ -71,9 +72,11 @@ export default {
       };
       this.status.loadingItem = id;
       this.$http.post(api, { data: cart })
-        .then(() => {
+        .then((res) => {
+          this.$httpMessageState(res, '已加入購物車');
           this.status.loadingItem = '';
-        });
+        })
+        .catch((err) => console.log(err));
     },
   },
   created() {

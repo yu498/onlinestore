@@ -29,10 +29,7 @@ export default {
         if (!res.data.success) {
           this.$router.push('/login');
         } else {
-          emitter.emit('push-message', {
-            style: 'success',
-            title: '登入成功',
-          });
+          this.$httpMessageState(res, '登入成功');
         }
       })
       .catch((err) => { console.log(err.required); }); // 反之失敗原因

@@ -75,7 +75,8 @@ export default {
             this.order = res.data.order;
             console.log(this.order);
           }
-        });
+        })
+        .catch((err) => console.log(err));
     },
     payOrder() {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/pay/${this.orderId}`;
@@ -85,7 +86,8 @@ export default {
           if (res.data.success) {
             this.getOrder();
           }
-        });
+        })
+        .catch((err) => console.log(err));
     },
   },
   created() {

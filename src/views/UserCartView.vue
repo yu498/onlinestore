@@ -31,21 +31,24 @@
     </div>
     <div class="d-flex flex-column">
       <hr />
-      <div class="input-group mb-3 input-group-sm">
-        <label for="a">
-          <input id="a" type="text" class="form-control" v-model="coupon_code" placeholder="請輸入優惠碼">
+      <div class="input-group mb-3 input-group-sm justify-content-end">
+        <label for="coupon_code">
+          <input id="coupon_code" type="text" class="form-control"
+           v-model="coupon_code" placeholder="請輸入優惠碼">
         </label>
-        <div class="input-group-append">
+        <div class="input-group-append ">
           <button class="btn btn-outline-secondary" type="button" @click="addCouponCode">
             套用優惠碼
           </button>
         </div>
       </div>
-      <div>
+      <div class="d-flex flex-column ">
+        <div class="d-flex justify-content-end">
         總金額:{{ carts.total }}
-      </div>
-      <div v-if="carts.final_total !== carts.total">
+        </div>
+        <div v-if="carts.final_total !== carts.total" class="d-flex justify-content-end">
         折扣價:{{ carts.final_total }}
+        </div>
       </div>
     </div>
   </div>
@@ -125,7 +128,7 @@ export default {
           this.carts = res.data.data;
         });
     },
-    updateCart(item, itemQty) {
+    updateCart(item, itemQty) { // 更新購物車
       console.log(item.qty);
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${item.id}`;
       const cart = {
@@ -136,26 +139,26 @@ export default {
         this.getCart();
       });
     },
-    DelCart(id) {
+    DelCart(id) { // 刪除單筆選項
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart/${id}`;
       this.$http.delete(url)
         .then((res) => {
-          console.log(res);
+          this.$httpMessageState(res, '該商品已刪除');
           this.getCart();
         });
     },
-    addCouponCode() {
+    addCouponCode() { // 套用優惠卷
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/coupon`;
       const coupon = {
         code: this.coupon_code,
       };
       this.$http.post(url, { data: coupon })
         .then((res) => {
-          console.log(res);
+          this.$httpMessageState(res, '已套用優惠卷');
           this.getCart();
         });
     },
-    createOrder() {
+    createOrder() { // 結帳頁面
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/order`;
       const order = this.form;
       this.$http.post(url, { data: order })
@@ -163,9 +166,6 @@ export default {
           this.$router.push(`/user/checkout/${res.data.orderId}`);
           console.log(this.order);
         });
-    },
-    getOrder() { // 進入商品特定頁面
-      // this.$router.push(`/user/checkout/${this.order}`);
     },
   },
   created() {

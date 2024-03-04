@@ -87,7 +87,8 @@ export default {
         this.pagination = response.data.pagination;
         this.isLoading = false;
         console.log(response);
-      });
+      })
+        .catch((err) => console.log(err));
     },
     openModal(isNew, item) {
       this.isNew = isNew;
@@ -107,16 +108,17 @@ export default {
     },
     updatePaid(item) {
       this.isLoading = true;
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/order/${item.id}`;
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/order/${item.id}`;
       const paid = {
         is_paid: item.is_paid,
       };
-      this.$http.put(api, { data: paid }).then((response) => {
+      this.$http.put(url, { data: paid }).then((res) => {
         this.isLoading = false;
         this.getOrders(this.currentPage);
-        console.log(response);
-        // this.$httpMessageState(response, '更新付款狀態');
-      });
+        // console.log(response);
+        this.$httpMessageState(res, '更新付款狀態');
+      })
+        .catch((err) => console.log(err));
     },
     delOrder() {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/order/${this.tempOrder.id}`;
@@ -126,7 +128,8 @@ export default {
         const delComponent = this.$refs.delModal;
         delComponent.hideModal();
         this.getOrders(this.currentPage);
-      });
+      })
+        .catch((err) => console.log(err));
     },
   },
   created() {
