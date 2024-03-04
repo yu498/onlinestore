@@ -27,8 +27,7 @@
           <div class="btn-group">
             <button class="btn btn-outline-primary btn-sm"
             @click="openCouponModal(false, item)">編輯</button>
-            <button class="btn btn-outline-danger -->
-              btn-sm" @click="openDelModal(item)">刪除</button>
+            <button class="btn btn-outline-danger btn-sm" @click="openDelModal(item)">刪除</button>
           </div>
         </td>
       </tr>
@@ -66,7 +65,7 @@ export default {
   methods: {
     getCoupon(page = 1) {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/coupons/?page=${page}`;
-      this.$http.get(url)
+      this.$http.get(url, this.tempProduct)
         .then((res) => {
           if (res.data.success) {
             this.coupons = res.data.coupons;
@@ -109,9 +108,11 @@ export default {
       delComponent.showModal();
     },
     delCoupon() {
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/coupon/${this.tempCoupon.id}`;
-      this.$http.delete(api).then(() => {
-        this.isLoading = false;
+      const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/coupon/${this.tempCoupon.id}`;
+      this.isLoading = true;
+      this.$http.delete(url).then((response) => {
+        console.log(response, this.tempCoupon);
+        this.$httpMessageState(response, '刪除優惠券');
         const delComponent = this.$refs.delModal;
         delComponent.hideModal();
         this.getCoupon();
