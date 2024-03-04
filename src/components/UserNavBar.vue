@@ -1,7 +1,10 @@
 <template>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mx-2 sticky-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <a class="navbar-brand" href="#">
+        <img src="../assets/image/_567258af-54db-48c4-9026-667cbcd296b9.jpg"
+        alt="" width="100" height="30">
+      </a>
       <button
         class="navbar-toggler"
         type="button"
@@ -24,17 +27,19 @@
           <li class="nav-item">
             <router-link to="/user/cart" class="nav-link mx-4 my-2">購物車</router-link>
           </li>
-          <li class="nav-item">
-            <router-link to="" class="nav-link mx-4 my-2">訂單查詢</router-link>
-          </li>
         </ul>
         <div class="d-flex justify-content-end">
-          <p class="nav-item m-2"><i class="bi bi-cart-fill"></i></p>
-          <router-link class="nav-item m-2" to="/login">
-            <i class="bi bi-person-circle"></i>
+          <router-link class="nav-link m-2" to="/login">
+            <i class="bi bi-person-circle logo-icon"></i>
           </router-link>
         </div>
       </div>
     </div>
   </nav>
 </template>
+
+<style>
+.logo-icon{
+  font-size: 24px;
+}
+</style>
