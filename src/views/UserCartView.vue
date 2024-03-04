@@ -92,7 +92,7 @@
         cols="30" rows="10" v-model="form.message"></textarea>
       </div>
       <div class="text-end">
-        <button class="btn btn-danger" @click="getOrder()">送出訂單</button>
+        <button class="btn btn-danger" @click="createOrder()">送出訂單</button>
       </div>
     </V-Form>
   </div>
@@ -163,8 +163,9 @@ export default {
       const order = this.form;
       this.$http.post(url, { data: order })
         .then((res) => {
-          this.$router.push(`/user/checkout/${res.data.orderId}`);
-          console.log(this.order);
+          if (res.data.orderId) {
+            this.$router.push(`/user/checkout/${res.data.orderId}`);
+          }
         });
     },
   },
