@@ -1,4 +1,5 @@
 <template>
+  <LoadingAnimation :active="isLoading"></LoadingAnimation>
   <div class="content">
     <div class="container">
       <div class="row">
@@ -11,19 +12,18 @@
             </a>
             </div>
             <div class="card-body">
-              <h5 class="card-title">{{ item.title }}</h5>
+              <h5 class="card-title fw-bold">{{ item.title }}</h5>
               <p class="card-text">Some quick example text to build on the
                 card title and make up the bulk of the card'
                 content.
               </p>
-              <span>
-                {{ $filters.currency(item.origin_price) }}
-                {{ $filters.currency(item.price) }}
+              <span class="fs-3">
+                $ {{ $filters.currency(item.price) }}
               </span>
                 <div>
                   <button
                   type="button"
-                  class="btn btn-primary  w-100"
+                  class="btn btn-outline-secondary w-100"
                   :disabled="this.status.loadingItem === item.id"
                   @click.prevent="addToCart(item.id)">
                   <i class="bi bi-cart-fill"></i>
@@ -37,6 +37,50 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      products: [],
+      product: {},
+      status: {
+        loadingItem: '',
+      },
+      isLoading: false,
+    };
+  },
+  methods: {
+    getProducts() { // 取得產品列表
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
+      this.isLoading = true;
+      this.$http.get(api)
+        .then((res) => {
+          this.isLoading = false;
+          this.products = res.data.products;
+        });
+    },
+    getProduct(id) { // 進入商品特定頁面
+      this.$router.push(`/user/product/${id}`);
+    },
+    addToCart(id) { // 加入購物車
+      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
+      const cart = {
+        product_id: id,
+        qty: 1,
+      };
+      this.status.loadingItem = id;
+      this.$http.post(api, { data: cart })
+        .then(() => {
+          this.status.loadingItem = '';
+        });
+    },
+  },
+  created() {
+    this.getProducts();
+  },
+};
+</script>
 
 <style>
 .post-meta-price {
@@ -63,45 +107,3 @@
   object-fit: cover;
 }
 </style>
-
-<script>
-export default {
-  data() {
-    return {
-      products: [],
-      product: {},
-      status: {
-        loadingItem: '',
-      },
-    };
-  },
-  methods: {
-    getProducts() { // 取得產品列表
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/products/all`;
-      this.$http.get(api)
-        .then((res) => {
-          this.products = res.data.products;
-        });
-    },
-    getProduct(id) { // 進入商品特定頁面
-      this.$router.push(`/user/product/${id}`);
-    },
-    addToCart(id) {
-      const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/cart`;
-      const cart = {
-        product_id: id,
-        qty: 1,
-      };
-      this.status.loadingItem = id;
-      this.$http.post(api, { data: cart })
-        .then((res) => {
-          this.status.loadingItem = '';
-          console.log(res);
-        });
-    },
-  },
-  created() {
-    this.getProducts();
-  },
-};
-</script>
