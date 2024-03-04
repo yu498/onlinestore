@@ -71,7 +71,6 @@ export default {
           this.isLoading = false;
           if (res.data.success) {
             this.products = res.data.products;
-            console.log(res.data.products);
             this.pagination = res.data.pagination;
           }
         })

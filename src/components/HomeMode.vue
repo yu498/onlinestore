@@ -25,7 +25,7 @@
     <div class="border py-2">
       <p class="text-center">
         為慶祝開幕本店，當月購物享5折優惠<br/>
-        輸入50%享有折扣
+        輸入<span class="fw-bold">sho50</span>即可50%享有折扣
       </p>
     </div>
     <div class="row d-flex flex-column mt-5">

@@ -1,5 +1,5 @@
 <template>
-  <Loading :active="isLoading"></Loading>
+ <LoadingAnimation :active="isLoading"></LoadingAnimation>
   <table class="table mt-4">
     <thead>
     <tr>
@@ -82,11 +82,10 @@ export default {
       this.currentPage = currentPage;
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/orders?page=${currentPage}`;
       this.isLoading = true;
-      this.$http.get(url, this.tempProduct).then((response) => {
-        this.orders = response.data.orders;
-        this.pagination = response.data.pagination;
+      this.$http.get(url, this.tempProduct).then((res) => {
+        this.orders = res.data.orders;
+        this.pagination = res.data.pagination;
         this.isLoading = false;
-        console.log(response);
       })
         .catch((err) => console.log(err));
     },
@@ -115,7 +114,6 @@ export default {
       this.$http.put(url, { data: paid }).then((res) => {
         this.isLoading = false;
         this.getOrders(this.currentPage);
-        // console.log(response);
         this.$httpMessageState(res, '更新付款狀態');
       })
         .catch((err) => console.log(err));
@@ -123,8 +121,7 @@ export default {
     delOrder() {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/order/${this.tempOrder.id}`;
       this.isLoading = true;
-      this.$http.delete(url).then((response) => {
-        console.log(response);
+      this.$http.delete(url).then(() => {
         const delComponent = this.$refs.delModal;
         delComponent.hideModal();
         this.getOrders(this.currentPage);
