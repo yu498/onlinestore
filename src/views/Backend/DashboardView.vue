@@ -9,7 +9,7 @@
 <script>
 import emitter from '@/methods/emitter';
 import ToastMessages from '@/components/ToastMessages.vue';
-import Navbar from '@/components/NavBar.vue';
+import Navbar from '@/components/Backed/NavBar.vue';
 
 export default {
   components: {

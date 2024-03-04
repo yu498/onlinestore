@@ -73,7 +73,6 @@ export default {
         .then((res) => {
           if (res.data.success) {
             this.order = res.data.order;
-            console.log(this.order);
           }
         })
         .catch((err) => console.log(err));
@@ -82,7 +81,6 @@ export default {
       const url = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/pay/${this.orderId}`;
       this.$http.post(url)
         .then((res) => {
-          console.log(res);
           if (res.data.success) {
             this.getOrder();
           }
