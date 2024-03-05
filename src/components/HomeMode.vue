@@ -29,21 +29,21 @@
       </p>
     </div>
     <div class="row d-flex flex-column mt-5">
-      <div class="d-flex">
-        <div class="col-md-6">
+      <div class="d-lg-flex d-md-flex-column mb-3">
+        <div class="col-lg-6 col-md-12">
           <img src="../assets/image/homepage284_04.jpg" alt="" class="w-100" />
         </div>
-        <div class="col-md-6 d-flex flex-column justify-content-center">
+        <div class="col-lg-6 col-md-12 d-flex flex-column justify-content-center">
           <h2 class="fw-bold">精選服飾</h2>
           <p>日韓歐風格，成為路上焦點</p>
           <router-link to="/user/products" class="btn btn-outline-secondary me-2">選購商品</router-link>
         </div>
       </div>
-      <div class="d-flex flex-row-reverse ">
-        <div class="col-md-6">
+      <div class="d-lg-flex flex-row-reverse d-md-flex-column mb-3">
+        <div class="col-lg-6 col-md-12">
           <img src="../assets/image/homepage284_04.jpg" alt="" class="w-100" />
         </div>
-        <div class="col-md-6 d-flex flex-column justify-content-center">
+        <div class="col-md-6 col-md-12 d-flex flex-column justify-content-center">
           <h2 class="fw-bold">精品配件</h2>
           <p>各式精美飾品，讓你身上不再單調</p>
           <router-link to="/user/products" class="btn btn-outline-secondary me-2">選購商品</router-link>

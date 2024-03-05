@@ -1,56 +1,63 @@
 <template>
   <LoadingAnimation :active="isLoading"></LoadingAnimation>
   <div class="container">
-    <div class="item_header">
-      <div class="item_detail">商品</div>
-      <div class="price">單價</div>
-      <div class="count">數量</div>
-      <div class="amount">總計</div>
-      <div class="operate">操作</div>
-    </div>
-    <div class="item_header item_body" v-for="item in carts.carts" :key="item.id">
-      <div class="item_detail">
-        <img :src="item.product.imageUrl" alt="">
-        <div class="name">{{ item.product.title }}</div>
-      </div>
-      <div class="price"><span>$</span>{{ item.product.price }}</div>
-      <div class="count d-flex">
-        <button @click="updateCart(item, item.qty - 1)"
-        type="button" class="btn btn-outline-secondary">-</button>
-        <input type="number" class="form-control qty-input w-50"
-         placeholder="請輸入數量" aria-label="qty" v-model="item.qty"
-        @change.prevent="refreshCart(item, item.qty)">
-        <button @click="updateCart(item, item.qty + 1)"
-        type="button" class="btn btn-outline-secondary">+</button>
-      </div>
-      <div class="amount ms-3">{{ item.final_total }}</div>
-      <div class="operate">
-        <button @click="DelCart(item.id)" type="button"
-        class="btn btn-outline-secondary">刪除</button>
-      </div>
-    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">商品</th>
+          <th scope="col">單價</th>
+          <th scope="col">數量</th>
+          <th scope="col">操作</th>
+        </tr>
+      </thead>
+      <tbody  v-for="item in carts.carts" :key="item.id">
+        <tr>
+          <td class="item_body">
+            <img :src="item.product.imageUrl" alt="">
+            <div class="d-none d-lg-block d-xl-none">{{ item.product.title }}</div>
+          </td>
+          <td><span>$</span>{{ item.product.price }}</td>
+          <td>
+            <div class="count d-flex">
+              <button @click="updateCart(item, item.qty - 1)"
+              type="button" class="btn btn-outline-secondary">-</button>
+              <input type="number" class="form-control qty-input w-25"
+              placeholder="請輸入數量" aria-label="qty" v-model="item.qty"
+              @change.prevent="refreshCart(item, item.qty)">
+              <button @click="updateCart(item, item.qty + 1)"
+              type="button" class="btn btn-outline-secondary">+</button>
+          </div>
+          </td>
+          <td>
+            <div class="operate">
+              <button @click="DelCart(item.id)" type="button"
+              class="btn btn-outline-secondary">刪除</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
     <div class="d-flex flex-column">
-      <hr />
-      <div class="input-group mb-3 input-group-sm justify-content-end">
-        <label for="coupon_code">
-          <input id="coupon_code" type="text" class="form-control"
-           v-model="coupon_code" placeholder="請輸入優惠碼">
-        </label>
-        <div class="input-group-append ">
-          <button class="btn btn-outline-secondary" type="button" @click="addCouponCode">
-            套用優惠碼
-          </button>
+        <div class="input-group mb-3 input-group-sm justify-content-end">
+          <label for="coupon_code">
+            <input id="coupon_code" type="text" class="form-control"
+            v-model="coupon_code" placeholder="請輸入優惠碼">
+          </label>
+          <div class="input-group-append ">
+            <button class="btn btn-outline-secondary" type="button" @click="addCouponCode">
+              套用優惠碼
+            </button>
+          </div>
+        </div>
+        <div class="d-flex flex-column ">
+          <div class="d-flex justify-content-end">
+          總金額:{{ carts.total }}
+          </div>
+          <div v-if="carts.final_total !== carts.total" class="d-flex justify-content-end">
+          折扣價:{{ carts.final_total }}
+          </div>
         </div>
       </div>
-      <div class="d-flex flex-column ">
-        <div class="d-flex justify-content-end">
-        總金額:{{ carts.total }}
-        </div>
-        <div v-if="carts.final_total !== carts.total" class="d-flex justify-content-end">
-        折扣價:{{ carts.final_total }}
-        </div>
-      </div>
-    </div>
   </div>
   <div class="my-5 row justify-content-center">
     <V-Form class="col-md-6" v-slot="{ errors }" @submit="createOrder">
@@ -176,42 +183,11 @@ export default {
 </script>
 
 <style>
-.item_header {
-  display: flex;
-  width: 1000px;
-  margin: 0 auto;
-  height: 30px;
-  background-color: #fff;
-  border-radius: 3px;
-  padding-left: 10px;
-}
-
-.item_header div {
-  width: 200px;
-  color: #212529;
-  line-height: 30px;
-}
-
-.item_header .item_detail {
-  width: 50%;
-}
-
-.item_body {
-  margin-top: 20px;
-  height: 100px;
-  align-items: center;
-}
-
-.item_detail img {
+.item_body img{
+  position: relative;
   width: 80px;
   height: 80px;
-  border-radius: 3px;
-  /* margin-top: 10px; */
-  float: left;
-}
-
-.item_detail .name {
-  margin-left: 100px;
-  margin-top: 20px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
 }
 </style>
